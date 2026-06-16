@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>上海周末遛娃推荐</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #FFF7E6 0%, #FFECCC 100%);
+            min-height: 100vh; color: #333;
+        }
+        .phone-container {
+            max-width: 390px; margin: 20px auto; background: white;
+            border-radius: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden; min-height: 844px; position: relative;
+        }
+        .status-bar {
+            height: 44px; background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 14px; font-weight: 600; position: relative;
+        }
+        .page-content { padding: 20px 16px 100px; }
+        .hero-section { text-align: center; margin-bottom: 24px; }
+        .hero-emoji { font-size: 48px; margin-bottom: 12px; }
+        .hero-title { font-size: 24px; font-weight: bold; color: #FF8C00; margin-bottom: 8px; }
+        .hero-subtitle { font-size: 14px; color: #999; }
+
+        /* 月份推荐横幅 */
+        .month-banner {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8C00 100%);
+            border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;
+            color: white; display: flex; align-items: center; justify-content: space-between;
+        }
+        .month-banner-text { font-size: 14px; font-weight: 600; line-height: 1.5; }
+        .month-banner-badge {
+            background: white; color: #FF6B6B; padding: 4px 12px;
+            border-radius: 20px; font-size: 12px; font-weight: bold; white-space: nowrap;
+        }
+
+        /* 已去足迹 */
+        .visited-section {
+            background: #F9F9F9; border-radius: 12px; padding: 14px; margin-bottom: 16px;
+        }
+        .visited-header {
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+        }
+        .visited-title { font-size: 14px; font-weight: 600; color: #666; }
+        .visited-count { font-size: 12px; color: #999; }
+        .visited-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .visited-tag {
+            padding: 4px 10px; border-radius: 20px; font-size: 12px;
+            background: #E8F5E9; color: #4CAF50; cursor: pointer;
+        }
+        .visited-tag:hover { opacity: 0.7; }
+        .visited-hint { font-size: 11px; color: #999; margin-top: 8px; }
+
+        .step-card {
+            background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 2px solid #FFE5CC;
+        }
+        .step-header { display: flex; align-items: center; margin-bottom: 16px; }
+        .step-number {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; margin-right: 12px; font-size: 16px;
+        }
+        .step-title { font-size: 18px; font-weight: 600; color: #333; }
+        .age-options, .budget-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .age-option, .budget-option {
+            padding: 14px 8px; border-radius: 12px; border: 2px solid #E8E8E8;
+            text-align: center; cursor: pointer; transition: all 0.3s; background: white;
+        }
+        .age-option.selected, .budget-option.selected {
+            border-color: #FF8C00; background: #FFF7E6; transform: scale(1.02);
+        }
+        .age-option-emoji { font-size: 28px; margin-bottom: 6px; }
+        .age-option-label { font-size: 14px; font-weight: 600; color: #333; }
+        .age-option-desc { font-size: 11px; color: #999; margin-top: 2px; }
+        .budget-emoji { font-size: 24px; margin-bottom: 4px; }
+        .budget-label { font-size: 14px; font-weight: 600; color: #333; }
+        .budget-range { font-size: 11px; color: #999; margin-top: 2px; }
+        .weather-card {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-radius: 12px; padding: 16px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .weather-card.rainy { background: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%); }
+        .weather-info { display: flex; align-items: center; gap: 12px; }
+        .weather-icon { font-size: 40px; }
+        .weather-temp { font-size: 28px; font-weight: bold; color: #333; }
+        .weather-desc { font-size: 14px; color: #666; }
+        .weather-switch {
+            padding: 8px 16px; background: white; border-radius: 20px;
+            font-size: 13px; color: #666; cursor: pointer; border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .submit-btn {
+            position: fixed; bottom: 34px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 32px); max-width: 358px; padding: 16px;
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 16px;
+            font-size: 18px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255,140,0,0.4); z-index: 100;
+        }
+
+        /* 推荐卡片 */
+        .venue-card {
+            background: white; border-radius: 16px; overflow: hidden;
+            margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border-left: 4px solid #FF8C00; cursor: pointer;
+        }
+        .venue-card-body { padding: 16px; }
+        .venue-rank {
+            display: inline-block; width: 28px; height: 28px; border-radius: 50%;
+            background: #FF8C00; color: white; text-align: center; line-height: 28px;
+            font-weight: bold; font-size: 14px; margin-bottom: 10px;
+        }
+        /* 新标签 */
+        .venue-new-tag {
+            display: inline-block; margin-left: 8px;
+            background: #FF6B6B; color: white; font-size: 11px;
+            padding: 2px 8px; border-radius: 10px; vertical-align: middle;
+        }
+        .venue-near-tag {
+            display: inline-block; margin-left: 8px;
+            background: #2196F3; color: white; font-size: 11px;
+            padding: 2px 8px; border-radius: 10px; vertical-align: middle;
+        }
+        .venue-name { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 8px; }
+        .venue-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+        .venue-tag { padding: 4px 10px; border-radius: 20px; font-size: 12px; background: #F5F5F5; color: #666; }
+        .venue-tag.score { background: #FFF7E6; color: #FF8C00; }
+        .venue-tag.cost { background: #E8F5E9; color: #4CAF50; }
+        .venue-tag.weather { background: #E3F2FD; color: #2196F3; }
+        .venue-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .edu-tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; background: #F3E5F5; color: #9C27B0; }
+        .venue-pros-cons { background: #FAFAFA; border-radius: 10px; padding: 12px; margin-top: 10px; }
+        .pros, .cons { font-size: 13px; margin-bottom: 6px; }
+        .pros::before { content: '✅ '; }
+        .cons::before { content: '⚠️ '; }
+        .venue-images {
+            display: flex; gap: 8px; overflow-x: auto; padding: 0 16px 12px;
+            scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+        }
+        .venue-images::-webkit-scrollbar { display: none; }
+        .venue-img {
+            flex: 0 0 140px; height: 100px; border-radius: 10px;
+            background-size: cover; background-position: center;
+            scroll-snap-align: start; position: relative; display: flex;
+            align-items: center; justify-content: center; font-size: 42px;
+        }
+        .venue-img-label {
+            position: absolute; bottom: 4px; left: 4px;
+            background: rgba(0,0,0,0.6); color: white; font-size: 10px;
+            padding: 2px 8px; border-radius: 10px;
+        }
+        .xhs-link {
+            display: flex; align-items: center; gap: 6px; padding: 8px 16px;
+            margin: 0 16px 12px; background: #FFF0F0; border-radius: 10px;
+            font-size: 13px; color: #FF2442; text-decoration: none;
+        }
+        .xhs-link-icon { font-size: 18px; }
+        .xhs-link-like { margin-left: auto; font-size: 12px; color: #FF2442; }
+
+        .back-btn {
+            padding: 10px 20px; background: #F5F5F5; border: none; border-radius: 20px;
+            font-size: 14px; color: #666; cursor: pointer; margin-bottom: 16px;
+        }
+        .detail-section { margin-bottom: 20px; }
+        .detail-section-title {
+            font-size: 16px; font-weight: bold; color: #333; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .detail-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .detail-info-item {
+            background: #F9F9F9; padding: 12px; border-radius: 10px;
+            display: flex; align-items: center; gap: 8px; font-size: 14px;
+        }
+
+        /* 预约渠道 */
+        .booking-btn {
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .booking-btn.primary { background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%); color: white; }
+        .booking-btn.gzh { background: linear-gradient(135deg, #07C160 0%, #06AD56 100%); color: white; }
+        .booking-btn.mp { background: linear-gradient(135deg, #576B95 0%, #4A5D82 100%); color: white; }
+        .booking-btn.deal { background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%); color: white; }
+
+        /* 薅羊毛卡片 */
+        .deal-card {
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+            border-radius: 12px; padding: 14px; margin-top: 12px;
+            border: 1px dashed #FF6B6B;
+        }
+        .deal-card-title {
+            font-size: 14px; font-weight: bold; color: #FF6B6B;
+            margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+        }
+        .deal-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid #FFE0E0;
+        }
+        .deal-item:last-child { border-bottom: none; }
+        .deal-platform { font-size: 13px; color: #333; font-weight: 600; }
+        .deal-price { font-size: 15px; color: #FF4757; font-weight: bold; }
+        .deal-save {
+            font-size: 11px; background: #FF4757; color: white;
+            padding: 2px 8px; border-radius: 10px; margin-left: 6px;
+        }
+        .deal-original { font-size: 12px; color: #999; text-decoration: line-through; margin-left: 4px; }
+
+        .review-summary { background: #F9F9F9; padding: 16px; border-radius: 12px; margin-top: 10px; }
+        .review-keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .keyword { padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .keyword.pro { background: #E8F5E9; color: #4CAF50; }
+        .keyword.con { background: #FFF3E0; color: #FF9800; }
+
+        /* 对比表格 */
+        .compare-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .compare-table th, .compare-table td {
+            padding: 12px 8px; text-align: center; border-bottom: 1px solid #F0F0F0; font-size: 13px;
+        }
+        .compare-table th { background: #FFF7E6; color: #FF8C00; font-weight: 600; }
+        .compare-table td:first-child { text-align: left; font-weight: 600; color: #666; }
+        .pros-cons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+        .pros-cons-card { background: #F9F9F9; border-radius: 12px; padding: 14px; }
+        .pros-cons-card h4 { font-size: 14px; margin-bottom: 10px; color: #333; }
+        .pros-cons-card li { font-size: 12px; margin-bottom: 6px; line-height: 1.5; }
+        .share-btn {
+            width: 100%; padding: 14px; background: #07C160; color: white; border: none;
+            border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 16px;
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="status-bar">上海周末遛娃推荐</div>
+
+        <!-- ====== 首页 ====== -->
+        <div class="page-content page active" id="homePage">
+            <div class="hero-section">
+                <div class="hero-emoji">👨‍👩‍👧‍👦</div>
+                <div class="hero-title">3分钟找到最适合的遛娃方案</div>
+                <div class="hero-subtitle">上海 · 0-6岁 · 周末推荐</div>
+            </div>
+
+            <!-- 月份推荐横幅 -->
+            <div class="month-banner">
+                <div class="month-banner-text">
+                    🗓️ <b>6月新推荐</b>已更新<br>
+                    <span style="font-size:12px;opacity:0.9;">已为你排除3个已去过的地方</span>
+                </div>
+                <div class="month-banner-badge">本月上新5处</div>
+            </div>
+
+            <!-- 已去足迹 -->
+            <div class="visited-section">
+                <div class="visited-header">
+                    <div class="visited-title">🧭 我的遛娃足迹</div>
+                    <div class="visited-count" id="visitedCount">已去 3 处</div>
+                </div>
+                <div class="visited-tags" id="visitedTags"></div>
+                <div class="visited-hint">点击可移除，推荐时将优先排除已去场所</div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header"><div class="step-number">1</div><div class="step-title">选择孩子年龄</div></div>
+                <div class="age-options">
+                    <div class="age-option" data-age="0-1" onclick="selectAge(this)"><div class="age-option-emoji">👶</div><div class="age-option-label">0-1岁</div><div class="age-option-desc">感官发展期</div></div>
+                    <div class="age-option selected" data-age="1-3" onclick="selectAge(this)"><div class="age-option-emoji">🧒</div><div class="age-option-label">1-3岁</div><div class="age-option-desc">大运动发展期</div></div>
+                    <div class="age-option" data-age="3-6" onclick="selectAge(this)"><div class="age-option-emoji">👦</div><div class="age-option-label">3-6岁</div><div class="age-option-desc">认知发展期</div></div>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-header"><div class="step-number">2</div><div class="step-title">本周末天气</div></div>
+                <div class="weather-card" id="weatherCard">
+                    <div class="weather-info">
+                        <div class="weather-icon" id="weatherIcon">☀️</div>
+                        <div><div class="weather-temp" id="weatherTemp">28°C</div><div class="weather-desc" id="weatherDesc">周六晴 28°C / 周日多云 25°C</div></div>
+                    </div>
+                    <button class="weather-switch" onclick="toggleWeather()">切换天气</button>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-header"><div class="step-number">3</div><div class="step-title">选择预算档位</div></div>
+                <div class="budget-options">
+                    <div class="budget-option selected" data-budget="economy" onclick="selectBudget(this)"><div class="budget-emoji">💚</div><div class="budget-label">经济型</div><div class="budget-range">0-100元/组</div></div>
+                    <div class="budget-option" data-budget="quality" onclick="selectBudget(this)"><div class="budget-emoji">💛</div><div class="budget-label">品质型</div><div class="budget-range">100-200元/组</div></div>
+                    <div class="budget-option" data-budget="premium" onclick="selectBudget(this)"><div class="budget-emoji">🧡</div><div class="budget-label">享受型</div><div class="budget-range">200元以上/组</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== 推荐结果页 ====== -->
+        <div class="page-content page" id="resultPage">
+            <button class="back-btn" onclick="showPage('homePage')">← 返回修改</button>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 20px; font-weight: bold; color: #333;">为您推荐 Top3 方案</div>
+                <div style="font-size: 14px; color: #999; margin-top: 6px;" id="resultWeather">当前：☀️ 晴天 · 户外推荐</div>
+            </div>
+            <div id="venueCards"></div>
+            <div style="text-align: center; padding: 16px 0 20px;">
+                <button style="width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:bold;background:white;color:#FF8C00;border:2px solid #FF8C00;cursor:pointer;" onclick="goToCompare()">📊 查看 Top3 方案对比</button>
+            </div>
+        </div>
+
+        <!-- ====== 方案详情页 ====== -->
+        <div class="page-content page" id="detailPage">
+            <button class="back-btn" onclick="showPage('resultPage')">← 返回推荐</button>
+            <div id="detailContent"></div>
+        </div>
+
+        <!-- ====== 对比页面 ====== -->
+        <div class="page-content page" id="comparePage">
+            <button class="back-btn" onclick="showPage('resultPage')">← 返回推荐</button>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 20px; font-weight: bold; color: #333;">Top3 方案对比</div>
+                <div style="font-size: 14px; color: #999; margin-top: 6px;">多维度对比，帮你做决定</div>
+            </div>
+            <div id="compareContent"></div>
+            <button class="share-btn" onclick="alert('已生成分享卡片！（体验版）')">📤 分享到家庭群</button>
+        </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="showResults()">查看推荐方案 →</button>
+
+    <script>
+        let selectedAge = '1-3';
+        let selectedBudget = 'economy';
+        let isSunny = true;
+        let currentTop3 = [];
+
+        // 已去过的场所（模拟历史数据）
+        let visitedIds = ['v002', 'v003', 'v004'];
+
+        const venues = [
+            {
+                id: 'v001', name: '上海野生动物园', district: '浦东',
+                isIndoor: false, avgCost: 180, officialCost: 180, dpRating: 4.7, compositeScore: 4.7,
+                weatherSuitability: ['sunny', 'cloudy'],
+                tags: { eduValues: ['大运动', '感官发展', '认知启蒙'], features: ['有停车场', '可推婴儿车'] },
+                pros: ['动物种类多，孩子喜欢', '距离市区适中', '有儿童推车租赁'],
+                cons: ['周末人多需排队', '夏季户外较热'],
+                transportInfo: { metro: '地铁16号线野生动物园站', parking: true },
+                address: '浦东新区南六公路178号', businessHours: '9:00-17:00',
+                ageRange: '1-6岁', bestAge: '2-5岁', isNew: true, distance: '25km',
+                images: ['🦁', '🐼', '🦒', '🐘', '🦜'],
+                booking: [
+                    { platform: '官方公众号', type: 'gzh', desc: '关注"上海野生动物园"公众号 → 在线购票' },
+                    { platform: '微信小程序', type: 'mp', desc: '搜索"上海野生动物园"小程序 → 在线购票' }
+                ],
+                deals: [
+                    { platform: '美团', price: 148, save: 32 },
+                    { platform: '抖音团购', price: 138, save: 42 },
+                    { platform: '大众点评', price: 158, save: 22 }
+                ],
+                xhsLinks: [
+                    { title: '带2岁宝宝逛野生动物园全攻略', likes: '2.3万' },
+                    { title: '上海遛娃必去！动物园一日游', likes: '1.8万' }
+                ]
+            },
+            {
+                id: 'v002', name: '上海科技馆', district: '浦东',
+                isIndoor: true, avgCost: 60, officialCost: 60, dpRating: 4.8, compositeScore: 4.8,
+                weatherSuitability: ['rainy', 'sunny', 'hot', 'cold'],
+                tags: { eduValues: ['认知发展', '创造力', '科学启蒙'], features: ['有停车场', '地铁直达'] },
+                pros: ['寓教于乐，孩子超爱', '室内不怕天气变化', '预约方便'],
+                cons: ['周末人超多', '需要提前预约'],
+                transportInfo: { metro: '地铁2号线上海科技馆站', parking: true },
+                address: '浦东新区世纪大道2000号', businessHours: '9:00-17:15（周一闭馆）',
+                ageRange: '3-10岁', bestAge: '4-8岁', isNew: false, distance: '12km',
+                images: ['🦕', '🔬', '🌍', '🤖', '🚀'],
+                booking: [
+                    { platform: '官方公众号', type: 'gzh', desc: '关注"上海科技馆"公众号 → 参观预约' },
+                    { platform: '微信小程序', type: 'mp', desc: '搜索"上海科技馆"小程序 → 在线预约' }
+                ],
+                deals: [
+                    { platform: '美团', price: 45, save: 15 },
+                    { platform: '大众点评', price: 50, save: 10 }
+                ],
+                xhsLinks: [
+                    { title: '上海科技馆亲子一日游攻略', likes: '3.1万' },
+                    { title: '4岁娃在科技馆玩到不想走', likes: '1.5万' }
+                ]
+            },
+            {
+                id: 'v003', name: '世纪公园', district: '浦东',
+                isIndoor: false, avgCost: 10, officialCost: 10, dpRating: 4.6, compositeScore: 4.5,
+                weatherSuitability: ['sunny', 'cloudy'],
+                tags: { eduValues: ['大运动', '自然探索'], features: ['免费', '有大草坪'] },
+                pros: ['免费！性价比超高', '大草坪适合奔跑', '有儿童游乐区'],
+                cons: ['无遮蔽物，雨天不适用', '厕所较少'],
+                transportInfo: { metro: '地铁2号线世纪公园站', parking: true },
+                address: '浦东新区锦绣路1001号', businessHours: '全天开放',
+                ageRange: '0-12岁', bestAge: '2-6岁', isNew: false, distance: '10km',
+                images: ['🌳', '🌸', '🪁', '🚲', '🧺'],
+                booking: [
+                    { platform: '官方公众号', type: 'gzh', desc: '关注"上海世纪公园"公众号 → 入园预约' },
+                    { platform: '微信小程序', type: 'mp', desc: '搜索"世纪公园"小程序 → 免费预约' }
+                ],
+                deals: [],
+                xhsLinks: [
+                    { title: '世纪公园遛娃攻略，免费超好玩', likes: '5.6万' },
+                    { title: '上海最值得去的免费亲子公园', likes: '3.2万' }
+                ]
+            },
+            {
+                id: 'v004', name: '上海自然博物馆', district: '静安',
+                isIndoor: true, avgCost: 30, officialCost: 30, dpRating: 4.8, compositeScore: 4.75,
+                weatherSuitability: ['rainy', 'sunny', 'hot', 'cold'],
+                tags: { eduValues: ['认知发展', '科学启蒙', '语言启蒙'], features: ['地铁直达', '有互动区'] },
+                pros: ['恐龙展超震撼', '互动设施多', '室内舒适'],
+                cons: ['需要提前预约', '人流量大'],
+                transportInfo: { metro: '地铁13号线自然博物馆站', parking: false },
+                address: '静安区北京西路510号', businessHours: '9:00-17:15（周一闭馆）',
+                ageRange: '3-12岁', bestAge: '4-8岁', isNew: false, distance: '8km',
+                images: ['🦖', '🦴', '🦋', '🌿', '🐠'],
+                booking: [
+                    { platform: '官方公众号', type: 'gzh', desc: '关注"上海自然博物馆"公众号 → 参观预约' },
+                    { platform: '微信小程序', type: 'mp', desc: '搜索"上海自然博物馆"小程序 → 在线预约' }
+                ],
+                deals: [
+                    { platform: '美团', price: 25, save: 5 }
+                ],
+                xhsLinks: [
+                    { title: '上海自然博物馆带娃攻略，恐龙迷必去', likes: '4.2万' },
+                    { title: '周末遛娃好去处｜自然博物馆', likes: '2.8万' }
+                ]
+            },
+            {
+                id: 'v005', name: '长风海洋世界', district: '普陀',
+                isIndoor: true, avgCost: 180, officialCost: 180, dpRating: 4.5, compositeScore: 4.5,
+                weatherSuitability: ['rainy', 'sunny'],
+                tags: { eduValues: ['感官发展', '认知启蒙'], features: ['适合低龄', '室内'] },
+                pros: ['白鲸表演很精彩', '室内环境好', '适合雨天'],
+                cons: ['门票略贵', '地方不算大'],
+                transportInfo: { metro: '地铁13号线大渡河路站', parking: true },
+                address: '普陀区大渡河路451号长风公园内', businessHours: '9:00-17:00',
+                ageRange: '1-8岁', bestAge: '2-5岁', isNew: true, distance: '15km',
+                images: ['🐬', '🦈', '🐧', '🐠', '🦀'],
+                booking: [
+                    { platform: '官方公众号', type: 'gzh', desc: '关注"上海长风海洋世界"公众号 → 在线购票' },
+                    { platform: '微信小程序', type: 'mp', desc: '搜索"长风海洋世界"小程序 → 购票' }
+                ],
+                deals: [
+                    { platform: '抖音团购', price: 128, save: 52 },
+                    { platform: '美团', price: 148, save: 32 },
+                    { platform: '大众点评', price: 155, save: 25 }
+                ],
+                xhsLinks: [
+                    { title: '长风海洋世界遛娃体验分享', likes: '1.9万' },
+                    { title: '雨天遛娃首选！海洋馆太适合了', likes: '8.6千' }
+                ]
+            },
+            {
+                id: 'v006', name: '迪士尼小镇', district: '浦东',
+                isIndoor: false, avgCost: 399, officialCost: 399, dpRating: 4.9, compositeScore: 4.85,
+                weatherSuitability: ['sunny', 'cloudy'],
+                tags: { eduValues: ['社交启蒙', '大运动'], features: ['高端体验', '有花车巡游'] },
+                pros: ['孩子最爱的地方', '设施一流', '体验感满分'],
+                cons: ['门票贵', '人多需排队', '一天玩不完'],
+                transportInfo: { metro: '地铁11号线迪士尼站', parking: true },
+                address: '浦东新区川沙镇黄赵路310号', businessHours: '9:00-20:00',
+                ageRange: '3-12岁', bestAge: '4-10岁', isNew: false, distance: '35km',
+                images: ['🏰', '🎢', '🎠', '🎆', '🐭'],
+                booking: [
+                    { platform: '官方公众号', type: 'gzh', desc: '关注"上海迪士尼度假区"公众号 → 在线购票' },
+                    { platform: '微信小程序', type: 'mp', desc: '搜索"上海迪士尼"小程序 → 购票' }
+                ],
+                deals: [
+                    { platform: '美团', price: 359, save: 40 },
+                    { platform: '抖音团购', price: 349, save: 50 },
+                    { platform: '飞猪', price: 369, save: 30 }
+                ],
+                xhsLinks: [
+                    { title: '迪士尼遛娃一日游保姆级攻略', likes: '12.3万' },
+                    { title: '3岁宝宝玩迪士尼超全攻略', likes: '5.7万' }
+                ]
+            }
+        ];
+
+        // ====== 初始化已去足迹 ======
+        function renderVisited() {
+            const tags = document.getElementById('visitedTags');
+            tags.innerHTML = '';
+            visitedIds.forEach(vid => {
+                const v = venues.find(x => x.id === vid);
+                if (v) {
+                    const tag = document.createElement('span');
+                    tag.className = 'visited-tag';
+                    tag.textContent = `✅ ${v.name}`;
+                    tag.onclick = () => {
+                        visitedIds = visitedIds.filter(id => id !== vid);
+                        renderVisited();
+                    };
+                    tags.appendChild(tag);
+                }
+            });
+            document.getElementById('visitedCount').textContent = `已去 ${visitedIds.length} 处`;
+        }
+        renderVisited();
+
+        // ====== 工具函数 ======
+        function selectAge(el) {
+            document.querySelectorAll('.age-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedAge = el.dataset.age;
+        }
+        function selectBudget(el) {
+            document.querySelectorAll('.budget-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedBudget = el.dataset.budget;
+        }
+        function toggleWeather() {
+            isSunny = !isSunny;
+            document.getElementById('weatherIcon').textContent = isSunny ? '☀️' : '🌧️';
+            document.getElementById('weatherTemp').textContent = isSunny ? '28°C' : '22°C';
+            document.getElementById('weatherDesc').textContent = isSunny ? '周六晴 28°C / 周日多云 25°C' : '周六小雨 22°C / 周日中雨 20°C';
+            document.getElementById('weatherCard').classList.toggle('rainy', !isSunny);
+        }
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.getElementById('submitBtn').style.display = pageId === 'homePage' ? 'block' : 'none';
+        }
+
+        function getEmojiImg(venue) {
+            const colors = ['#E3F2FD','#FFF3E0','#E8F5E9','#F3E5F5','#FFEBEE','#E0F7FA'];
+            return venue.images.map((emoji, i) => {
+                return `<div class="venue-img" style="background:${colors[i%6]}"><span class="venue-img-label">实景${i+1}</span>${emoji}</div>`;
+            }).join('');
+        }
+        function getXhsLinksHTML(venue) {
+            if (!venue.xhsLinks || !venue.xhsLinks.length) return '';
+            return venue.xhsLinks.map(link => `
+                <a class="xhs-link" href="#" onclick="event.preventDefault();alert('体验版：跳转小红书笔记')">
+                    <span class="xhs-link-icon">📕</span>
+                    <span>${link.title}</span>
+                    <span class="xhs-link-like">❤️ ${link.likes}</span>
+                </a>
+            `).join('');
+        }
+
+        // 推荐算法：排除已去 + 新场所优先 + 距离近优先
+        function getFilteredTop3() {
+            let filtered = venues.filter(v => {
+                if (selectedBudget === 'economy' && v.avgCost > 100) return false;
+                if (selectedBudget === 'quality' && (v.avgCost < 100 || v.avgCost > 200)) return false;
+                if (selectedBudget === 'premium' && v.avgCost < 200) return false;
+                if (!isSunny && !v.isIndoor) return false;
+                return true;
+            });
+
+            // 排序：已去过的排后面，新场所/近场所排前面
+            filtered.sort((a, b) => {
+                const aVisited = visitedIds.includes(a.id) ? 1 : 0;
+                const bVisited = visitedIds.includes(b.id) ? 1 : 0;
+                if (aVisited !== bVisited) return aVisited - bVisited; // 未去的优先
+                const aNew = a.isNew ? 0 : 1;
+                const bNew = b.isNew ? 0 : 1;
+                if (aNew !== bNew) return aNew - bNew; // 新场所优先
+                return b.compositeScore - a.compositeScore; // 评分高的优先
+            });
+
+            return filtered.slice(0, 3);
+        }
+
+        // ====== 推荐结果页 ======
+        function showResults() {
+            currentTop3 = getFilteredTop3();
+            document.getElementById('resultWeather').textContent = `当前：${isSunny ? '☀️ 晴天 · 户外推荐' : '🌧️ 阴雨天 · 室内推荐'}`;
+
+            const container = document.getElementById('venueCards');
+            container.innerHTML = '';
+
+            currentTop3.forEach((venue, index) => {
+                const isVisited = visitedIds.includes(venue.id);
+                const card = document.createElement('div');
+                card.className = 'venue-card';
+                card.innerHTML = `
+                    <div class="venue-images">${getEmojiImg(venue)}</div>
+                    ${getXhsLinksHTML(venue)}
+                    <div class="venue-card-body" onclick="showDetail('${venue.id}')">
+                        <div class="venue-rank">${index + 1}</div>
+                        <span class="venue-name">${venue.name}</span>
+                        ${venue.isNew ? '<span class="venue-new-tag">🆕 本月新推荐</span>' : ''}
+                        ${parseInt(venue.distance) <= 15 ? '<span class="venue-near-tag">📍 附近</span>' : ''}
+                        ${isVisited ? '<span style="font-size:12px;color:#999;margin-left:8px;">（已去过）</span>' : ''}
+                        <div class="venue-meta" style="margin-top:8px;">
+                            <span class="venue-tag score">⭐ ${venue.compositeScore}</span>
+                            <span class="venue-tag cost">💰 ${venue.avgCost}元/组</span>
+                            <span class="venue-tag weather">${venue.isIndoor ? '🏠 室内' : '☀️ 户外'}</span>
+                            <span class="venue-tag">📍 ${venue.district} · ${venue.distance}</span>
+                        </div>
+                        <div class="venue-tags">
+                            ${venue.tags.eduValues.map(t => `<span class="edu-tag">${t}</span>`).join('')}
+                        </div>
+                        <div class="venue-pros-cons">
+                            <div class="pros">${venue.pros[0]}</div>
+                            <div class="cons">${venue.cons[0]}</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            showPage('resultPage');
+        }
+
+        // ====== 详情页 ======
+        function showDetail(venueId) {
+            const venue = venues.find(v => v.id === venueId);
+            if (!venue) return;
+            const isVisited = visitedIds.includes(venue.id);
+
+            // 薅羊毛卡片
+            let dealHTML = '';
+            if (venue.deals && venue.deals.length > 0) {
+                const maxSave = Math.max(...venue.deals.map(d => d.save));
+                dealHTML = `
+                    <div class="deal-card">
+                        <div class="deal-card-title">🐑 薅羊毛 · 多平台比价（最多省${maxSave}元！）</div>
+                        ${venue.deals.map(d => `
+                            <div class="deal-item">
+                                <div>
+                                    <span class="deal-platform">${d.platform}</span>
+                                    <span class="deal-original">¥${venue.officialCost}</span>
+                                </div>
+                                <div>
+                                    <span class="deal-price">¥${d.price}</span>
+                                    <span class="deal-save">省${d.save}元</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                        <div style="font-size:11px;color:#999;margin-top:8px;text-align:center;">💡 价格可能随时变动，以实际页面为准</div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('detailContent').innerHTML = `
+                <div class="venue-images" style="padding:0;margin-bottom:16px;">${getEmojiImg(venue)}</div>
+                ${getXhsLinksHTML(venue)}
+
+                <div class="detail-section">
+                    <div style="font-size: 22px; font-weight: bold; color: #333; margin-bottom: 8px;">
+                        ${venue.name}
+                        ${venue.isNew ? '<span class="venue-new-tag">🆕 本月新推荐</span>' : ''}
+                        ${isVisited ? '<span style="font-size:13px;color:#4CAF50;margin-left:8px;">✅ 已去过</span>' : ''}
+                    </div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 12px;">📍 ${venue.address} · 距你约${venue.distance}</div>
+                    <div class="venue-meta">
+                        <span class="venue-tag score">⭐ ${venue.compositeScore}（大众点评${venue.dpRating}分）</span>
+                        <span class="venue-tag cost">💰 官方价 ${venue.officialCost}元/组</span>
+                        <span class="venue-tag weather">${venue.isIndoor ? '🏠 室内' : '☀️ 户外'}</span>
+                        <span class="venue-tag">⌛ ${venue.bestAge}</span>
+                    </div>
+                </div>
+
+                ${dealHTML}
+
+                <div class="detail-section" style="margin-top:20px;">
+                    <div class="detail-section-title">🎯 早教价值</div>
+                    <div class="venue-tags">${venue.tags.eduValues.map(t => `<span class="edu-tag">${t}</span>`).join('')}</div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-section-title">ℹ️ 基本信息</div>
+                    <div class="detail-info-grid">
+                        <div class="detail-info-item">🕐 ${venue.businessHours}</div>
+                        <div class="detail-info-item">📍 ${venue.district}</div>
+                        <div class="detail-info-item">🚇 ${venue.transportInfo.metro}</div>
+                        <div class="detail-info-item">🅿️ ${venue.transportInfo.parking ? '有停车场' : '无停车场'}</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-section-title">💬 家长评价摘要</div>
+                    <div class="review-summary">
+                        <div style="font-size: 14px; color: #666; line-height: 1.6;">家长普遍反馈这里适合${venue.bestAge}，孩子玩得很开心。${venue.pros[0]}。</div>
+                        <div class="review-keywords">
+                            ${venue.pros.map(p => `<span class="keyword pro">✅ ${p}</span>`).join('')}
+                            ${venue.cons.map(c => `<span class="keyword con">⚠️ ${c}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-section-title">📲 官方预约渠道</div>
+                    ${venue.booking.map(b => {
+                        const btnClass = b.type === 'gzh' ? 'gzh' : 'mp';
+                        const icon = b.type === 'gzh' ? '💚' : '🔷';
+                        return `<button class="booking-btn ${btnClass}" onclick="alert('体验版：${b.desc}')">${icon} ${b.platform}</button>`;
+                    }).join('')}
+                </div>
+
+                ${!isVisited ? `<button class="booking-btn" style="background:#F5F5F5;color:#666;margin-top:16px;" onclick="markVisited('${venue.id}')">📍 标记为已去过（下次不再优先推荐）</button>` : ''}
+
+                <button class="share-btn" onclick="goToCompare()">📊 查看 Top3 对比</button>
+            `;
+
+            showPage('detailPage');
+        }
+
+        function markVisited(venueId) {
+            if (!visitedIds.includes(venueId)) {
+                visitedIds.push(venueId);
+                renderVisited();
+                alert('已标记！下次推荐将优先排除该场所，为你推荐新去处 🎉');
+            }
+        }
+
+        // ====== 对比页 ======
+        function goToCompare() {
+            if (currentTop3.length === 0) currentTop3 = getFilteredTop3();
+            if (currentTop3.length < 2) {
+                document.getElementById('compareContent').innerHTML = `<div style="text-align:center;padding:40px;color:#999;"><div style="font-size:60px;margin-bottom:16px;">📭</div>当前匹配方案不足2个，无法对比</div>`;
+            } else {
+                renderCompare();
+            }
+            showPage('comparePage');
+        }
+
+        function renderCompare() {
+            const vs = currentTop3.slice(0, 3);
+            let tableHTML = `
+                <table class="compare-table">
+                    <thead><tr><th>对比维度</th>${vs.map(v => `<th>${v.name}</th>`).join('')}</tr></thead>
+                    <tbody>
+                        <tr><td>综合评分</td>${vs.map(v => `<td>⭐ ${v.compositeScore}</td>`).join('')}</tr>
+                        <tr><td>官方价</td>${vs.map(v => `<td>💰 ${v.officialCost}元</td>`).join('')}</tr>
+                        <tr><td>最低价</td>${vs.map(v => {
+                            const minDeal = v.deals && v.deals.length > 0 ? Math.min(...v.deals.map(d=>d.price)) : v.officialCost;
+                            const saved = v.officialCost - minDeal;
+                            return `<td style="color:${saved>0?'#FF4757':'#333'}">💰 ${minDeal}元${saved>0?`<br><span style="font-size:11px;">省${saved}元</span>`:''}</td>`;
+                        }).join('')}</tr>
+                        <tr><td>适合年龄</td>${vs.map(v => `<td>${v.ageRange}</td>`).join('')}</tr>
+                        <tr><td>天气适配</td>${vs.map(v => `<td>${v.isIndoor ? '🏠 室内' : '☀️ 户外'}</td>`).join('')}</tr>
+                        <tr><td>距离</td>${vs.map(v => `<td>${v.distance}</td>`).join('')}</tr>
+                        <tr><td>交通</td>${vs.map(v => `<td style="font-size:11px;">${v.transportInfo.metro}</td>`).join('')}</tr>
+                        <tr><td>本月新推荐</td>${vs.map(v => `<td>${v.isNew ? '🆕 是' : '—'}</td>`).join('')}</tr>
+                        <tr><td>已去过</td>${vs.map(v => `<td>${visitedIds.includes(v.id) ? '✅ 是' : '—'}</td>`).join('')}</tr>
+                    </tbody>
+                </table>
+            `;
+
+            let prosHTML = `<div class="pros-cons-grid">`;
+            vs.forEach(v => { prosHTML += `<div class="pros-cons-card"><h4>${v.name} · 优势</h4><ul>${v.pros.map(p=>`<li>✅ ${p}</li>`).join('')}</ul></div>`; });
+            prosHTML += `</div><div class="pros-cons-grid" style="margin-top:12px;">`;
+            vs.forEach(v => { prosHTML += `<div class="pros-cons-card"><h4>${v.name} · 注意</h4><ul>${v.cons.map(c=>`<li>⚠️ ${c}</li>`).join('')}</ul></div>`; });
+            prosHTML += `</div>`;
+
+            const best = vs.reduce((a,b)=>a.compositeScore>b.compositeScore?a:b);
+            const cheapest = vs.reduce((a,b)=>a.avgCost<b.avgCost?a:b);
+            const indoor = vs.find(v=>v.isIndoor);
+            const newVenue = vs.find(v=>v.isNew);
+
+            let recommendHTML = `
+                <div style="margin-top:20px;background:linear-gradient(135deg,#FFF7E6 0%,#FFF0D4 100%);border-radius:16px;padding:20px;">
+                    <div style="font-size:16px;font-weight:bold;color:#FF8C00;margin-bottom:12px;">🏆 综合推荐结论</div>
+                    <div style="font-size:14px;line-height:2;">
+                        📌 <b>综合最佳</b>：${best.name}（⭐${best.compositeScore}）<br>
+                        📌 <b>性价比最高</b>：${cheapest.name}（💰${cheapest.avgCost}元）<br>
+                        ${indoor?`📌 <b>雨天备选</b>：${indoor.name}（🏠室内）<br>`:''}
+                        ${newVenue?`📌 <b>本月新推荐</b>：${newVenue.name}（🆕还没去过！）<br>`:''}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('compareContent').innerHTML = tableHTML + prosHTML + recommendHTML;
+        }
+    </script>
+</body>
+</html>

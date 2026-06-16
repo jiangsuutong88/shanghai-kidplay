@@ -1,0 +1,116 @@
+.compare {
+  min-height: 100vh;
+  background: #F9FAFB;
+  padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+
+  &__header {
+    background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+    padding: 32px 24px 24px;
+  }
+
+  &__title {
+    font-size: 40px;
+    font-weight: 800;
+    color: #1E40AF;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  &__subtitle {
+    font-size: 28px;
+    color: #3B82F6;
+  }
+
+  &__table {
+    padding: 24px;
+  }
+
+  &__actions {
+    padding: 0 24px 16px;
+
+    .compare__tip {
+      font-size: 26px;
+      color: #9CA3AF;
+      text-align: center;
+      display: block;
+    }
+  }
+
+  &__cards {
+    padding: 0 24px 24px;
+  }
+
+  &__card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    &-info {
+      flex: 1;
+    }
+
+    &-name {
+      font-size: 30px;
+      font-weight: 600;
+      color: #1F2937;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    &-district {
+      font-size: 24px;
+      color: #9CA3AF;
+    }
+
+    &-remove {
+      padding: 12px 24px;
+      background: #FEF2F2;
+      border-radius: 12px;
+
+      &-text {
+        font-size: 26px;
+        color: #EF4444;
+        font-weight: 500;
+      }
+
+      &:active {
+        background: #FEE2E2;
+      }
+    }
+  }
+
+  &__share {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    background: #FFFFFF;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+
+    &-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 88px;
+      background: linear-gradient(135deg, #34D399, #059669);
+      border-radius: 20px;
+
+      &-text {
+        font-size: 32px;
+        font-weight: 600;
+        color: #FFFFFF;
+      }
+
+      &:active {
+        opacity: 0.9;
+      }
+    }
+  }
+}

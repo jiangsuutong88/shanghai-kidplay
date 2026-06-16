@@ -1,0 +1,59 @@
+sequenceDiagram
+    actor User as 用户(小程序)
+    participant API as NestJS API
+    participant RecSvc as RecommendService
+    participant WthSvc as WeatherService
+    participant VRepo as VenueRepository
+    participant Cache as Redis Cache
+    participant QWeather as 和风天气API
+
+    Note over User, QWeather: 核心流程：用户获取Top3推荐
+
+    User->>API: GET /api/v1/recommend/top3?ageGroup=1-3&budgetLevel=economy
+    API->>RecSvc: getTop3({ ageGroup, budgetLevel })
+
+    RecSvc->>WthSvc: getWeekendWeather("上海")
+    WthSvc->>Cache: 查询天气缓存
+    alt 缓存命中
+        Cache-->>WthSvc: 返回缓存天气数据
+    else 缓存未命中
+        WthSvc->>QWeather: 请求上海3天天气预报
+        QWeather-->>WthSvc: 返回天气数据
+        WthSvc->>Cache: 写入缓存(TTL=30min)
+    end
+    WthSvc-->>RecSvc: { condition: "sunny", tempHigh: 28, recommendation: "outdoor" }
+
+    RecSvc->>Cache: 查询推荐结果缓存(key=ageGroup+budget+weather)
+    alt 缓存命中
+        Cache-->>RecSvc: 返回缓存推荐结果
+    else 缓存未命中
+        RecSvc->>RecSvc: 执行三维筛选策略
+        Note over RecSvc: 1. weatherStrategy: 晴天→户外70%+室内30%
+        Note over RecSvc: 2. ageStrategy: 1-3岁→过滤minAge>36月, bestAge加权
+        Note over RecSvc: 3. budgetStrategy: economy→avgCost<=100
+
+        RecSvc->>VRepo: findByFilter(weather, age, budget)
+        VRepo-->>RecSvc: 候选场所列表(按compositeScore排序)
+
+        RecSvc->>RecSvc: 取Top5，选取差异度最大的3个方案
+        RecSvc->>RecSvc: 生成优劣势分析
+        RecSvc->>RecSvc: 选择天气备选方案
+
+        RecSvc->>Cache: 写入推荐结果缓存(TTL=1h)
+    end
+
+    RecSvc-->>API: RecommendResult
+    API-->>User: { code: 0, data: { plans: [A, B, C], backupPlan, weather } }
+
+    Note over User, QWeather: 用户查看方案详情
+
+    User->>API: GET /api/v1/venues/:venueId
+    API->>VRepo: findById(venueId)
+    VRepo-->>API: 场所详情+评价+预约链接
+    API-->>User: { code: 0, data: venueDetail }
+
+    Note over User, QWeather: 用户点击预约跳转
+
+    User->>API: POST /api/v1/booking/click { venueId, platform }
+    API-->>User: { code: 0, data: { recorded: true } }
+    User->>User: 跳转到大众点评小程序/H5/拨号

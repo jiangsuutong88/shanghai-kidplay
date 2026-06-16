@@ -1,0 +1,8 @@
+{
+  "miniprogramRoot": "dist/",
+  "projectname": "shanghai-kidplay",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": false
+  }
+}

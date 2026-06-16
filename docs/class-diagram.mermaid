@@ -1,0 +1,138 @@
+classDiagram
+    direction TB
+
+    class Venue {
+        +string id
+        +string name
+        +string address
+        +string district
+        +number longitude
+        +number latitude
+        +number minAgeMonths
+        +number bestAgeMonths
+        +number maxAgeMonths
+        +string venueType
+        +boolean isIndoor
+        +number avgCost
+        +number dpRating
+        +number xhsHotScore
+        +number dyInteractScore
+        +number compositeScore
+        +string weatherSuitability
+        +object transportInfo
+        +string bookingNote
+        +string coverUrl
+        +boolean isActive
+        +Date createdAt
+        +Date updatedAt
+        +VenueTag[] venueTags
+        +Review[] reviews
+        +BookingLink[] bookingLinks
+        +VenueImage[] images
+    }
+
+    class Review {
+        +string id
+        +string venueId
+        +string sourcePlatform
+        +string sourceId
+        +number rating
+        +string summary
+        +string[] prosKeywords
+        +string[] consKeywords
+        +number likeCount
+        +number collectCount
+        +Date sourceCreatedAt
+        +Date createdAt
+        +Venue venue
+    }
+
+    class Tag {
+        +string id
+        +string name
+        +string category
+        +VenueTag[] venueTags
+    }
+
+    class VenueTag {
+        +string venueId
+        +string tagId
+        +Venue venue
+        +Tag tag
+    }
+
+    class BookingLink {
+        +string id
+        +string venueId
+        +string platform
+        +string url
+        +string linkType
+        +boolean isActive
+        +Date lastVerifiedAt
+        +Venue venue
+    }
+
+    class VenueImage {
+        +string id
+        +string venueId
+        +string ossUrl
+        +string sourcePlatform
+        +boolean isCover
+        +number sortOrder
+        +Venue venue
+    }
+
+    class RecommendService {
+        -VenueRepository venueRepo
+        -WeatherService weatherSvc
+        -CacheService cacheSvc
+        +getTop3(query: RecommendQuery) RecommendResult
+        +getList(query: RecommendQuery) RecommendPlan[]
+        +compare(venueIds: string[], ageGroup: string) CompareResult
+        -applyWeatherStrategy(venues, weather) Venue[]
+        -applyAgeStrategy(venues, ageGroup) Venue[]
+        -applyBudgetStrategy(venues, budgetLevel) Venue[]
+        -selectTop3Diverse(candidates: Venue[]) Venue[]
+        -generateProsCons(venue, context) string[][]
+    }
+
+    class WeatherService {
+        -HttpService http
+        -CacheService cacheSvc
+        +getWeekendWeather(district: string) WeatherInfo
+        -fetchFromQWeather(city: string) RawWeather
+        -mapToCondition(raw: RawWeather) WeatherCondition
+        -getRecommendation(condition: WeatherCondition) string
+    }
+
+    class VenueService {
+        -VenueRepository venueRepo
+        +getById(id: string) VenueDetail
+        +search(query: VenueQuery) PaginatedResult~Venue~
+        +getByDistrict(district: string) Venue[]
+    }
+
+    class BookingService {
+        -BookingLinkRepository linkRepo
+        +getLinksByVenue(venueId: string) BookingLink[]
+        +recordClick(dto: BookingClickDto) void
+        +verifyLinks() void
+    }
+
+    class ReviewService {
+        -ReviewRepository reviewRepo
+        +getByVenue(venueId: string) Review[]
+        +getSummary(venueId: string) ReviewSummary
+    }
+
+    Venue "1" --o "0..*" VenueTag : has
+    Venue "1" --o "0..*" Review : receives
+    Venue "1" --o "0..*" BookingLink : provides
+    Venue "1" --o "0..*" VenueImage : displays
+    Tag "1" --o "0..*" VenueTag : applied_to
+
+    RecommendService ..> Venue : queries
+    RecommendService ..> WeatherService : uses
+    VenueService ..> Venue : manages
+    BookingService ..> BookingLink : manages
+    ReviewService ..> Review : queries

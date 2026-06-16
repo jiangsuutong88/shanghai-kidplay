@@ -1,0 +1,43 @@
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 20px;
+
+  &--edu {
+    background: #EFF6FF;
+  }
+
+  &--feature {
+    background: #F0FDF4;
+  }
+
+  &--weather {
+    background: #FEF3C7;
+  }
+
+  &--default {
+    background: #F3F4F6;
+  }
+
+  &__text {
+    font-size: 24px;
+    white-space: nowrap;
+
+    &--edu {
+      color: #2563EB;
+    }
+
+    &--feature {
+      color: #059669;
+    }
+
+    &--weather {
+      color: #D97706;
+    }
+
+    &--default {
+      color: #6B7280;
+    }
+  }
+}

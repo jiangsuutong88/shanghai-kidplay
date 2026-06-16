@@ -1,0 +1,126 @@
+.deal-card {
+  background: #FFFFFF;
+  border: 3px dashed #EF4444;
+  border-radius: 24px;
+  padding: 28px 24px;
+  margin-bottom: 20px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #DC2626;
+  }
+
+  &__save-badge {
+    background: #FEE2E2;
+    border: 2px solid #EF4444;
+    border-radius: 20px;
+    padding: 4px 16px;
+  }
+
+  &__save-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #DC2626;
+  }
+
+  &__official {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #F9FAFB;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  &__official-label {
+    font-size: 26px;
+    color: #6B7280;
+  }
+
+  &__official-price {
+    font-size: 30px;
+    font-weight: 700;
+    color: #374151;
+  }
+
+  &__platforms {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  &__platform {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #FFF7ED;
+    border-radius: 16px;
+    border: 2px solid transparent;
+
+    &--lowest {
+      background: #FEF2F2;
+      border-color: #EF4444;
+    }
+  }
+
+  &__platform-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__platform-icon {
+    font-size: 32px;
+  }
+
+  &__platform-name {
+    font-size: 28px;
+    color: #374151;
+    font-weight: 500;
+  }
+
+  &__platform-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__platform-price {
+    font-size: 30px;
+    font-weight: 700;
+    color: #DC2626;
+  }
+
+  &__lowest-tag {
+    background: #DC2626;
+    border-radius: 8px;
+    padding: 2px 12px;
+  }
+
+  &__lowest-tag-text {
+    font-size: 22px;
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+
+  &__disclaimer {
+    padding-top: 12px;
+    border-top: 1px solid #F3F4F6;
+  }
+
+  &__disclaimer-text {
+    font-size: 22px;
+    color: #9CA3AF;
+  }
+}

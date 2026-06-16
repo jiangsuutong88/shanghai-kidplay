@@ -1,0 +1,129 @@
+.compare-table {
+  background: #FFFFFF;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  &__empty {
+    padding: 80px 40px;
+    text-align: center;
+
+    &-text {
+      font-size: 28px;
+      color: #9CA3AF;
+    }
+  }
+
+  &__header {
+    display: flex;
+    background: #FFF7ED;
+    padding: 24px 16px;
+
+    &-label {
+      width: 160px;
+      flex-shrink: 0;
+    }
+
+    &-text {
+      font-size: 26px;
+      font-weight: 600;
+      color: #92400E;
+    }
+
+    &-venue {
+      flex: 1;
+      text-align: center;
+      padding: 0 8px;
+    }
+  }
+
+  &__venue-name {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1F2937;
+  }
+
+  &__row {
+    display: flex;
+    padding: 20px 16px;
+    border-bottom: 1px solid #F3F4F6;
+
+    &--even {
+      background: #FAFAFA;
+    }
+
+    &-label {
+      width: 160px;
+      flex-shrink: 0;
+
+      &-text {
+        font-size: 26px;
+        color: #6B7280;
+        font-weight: 500;
+      }
+    }
+
+    &-value {
+      flex: 1;
+      text-align: center;
+      padding: 0 8px;
+
+      &-text {
+        font-size: 26px;
+        color: #374151;
+      }
+    }
+  }
+
+  &__analysis {
+    padding: 32px 24px;
+
+    &-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    &-card {
+      background: #F9FAFB;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    &-name {
+      font-size: 28px;
+      font-weight: 600;
+      color: #1F2937;
+      margin-bottom: 12px;
+      display: block;
+    }
+  }
+
+  &__pros {
+    margin-bottom: 12px;
+  }
+
+  &__pro-item {
+    margin-bottom: 6px;
+  }
+
+  &__pro-text {
+    font-size: 26px;
+    color: #059669;
+  }
+
+  &__cons {
+  }
+
+  &__con-item {
+    margin-bottom: 6px;
+  }
+
+  &__con-text {
+    font-size: 26px;
+    color: #D97706;
+  }
+}

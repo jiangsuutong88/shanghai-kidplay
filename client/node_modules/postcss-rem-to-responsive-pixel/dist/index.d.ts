@@ -1,0 +1,22 @@
+import { PluginCreator, Input } from 'postcss';
+
+interface UserDefinedOptions {
+    rootValue?: number | ((input: Input) => number);
+    unitPrecision?: number;
+    selectorBlackList?: (string | RegExp)[];
+    propList?: (string | RegExp)[];
+    replace?: boolean;
+    mediaQuery?: boolean;
+    minRemValue?: number;
+    exclude?: (string | RegExp)[] | ((filePath: string) => boolean);
+    transformUnit?: 'px' | 'rpx';
+    disabled?: boolean;
+    processorStage?: 'Once' | 'OnceExit';
+}
+type PostcssRemToResponsivePixel = PluginCreator<UserDefinedOptions>;
+
+declare const plugin: PostcssRemToResponsivePixel;
+
+// @ts-ignore
+export = plugin;
+export type { PostcssRemToResponsivePixel, UserDefinedOptions };

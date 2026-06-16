@@ -1,0 +1,122 @@
+/* 全局样式 */
+/* Tailwind CSS - use @use instead of @import for Dart Sass 3.0 compatibility */
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
+
+/* 基础样式重置 */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
+  background-color: #F9FAFB;
+  color: #1F2937;
+  font-size: 28px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 安全区域适配 */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* 通用卡片样式 */
+.card {
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* 祖辈友好：大按钮 */
+.btn-large {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+/* 主色按钮 */
+.btn-primary {
+  background: linear-gradient(135deg, #FB923C, #F97316);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3);
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+/* 次要按钮 */
+.btn-secondary {
+  background: #F3F4F6;
+  color: #6B7280;
+
+  &:active {
+    background: #E5E7EB;
+  }
+}
+
+/* 步骤指示器 */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  margin-bottom: 16px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+}
+
+.step-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.step-dot--active {
+  background: #F97316;
+  color: #FFFFFF;
+}
+
+.step-dot--completed {
+  background: #34D399;
+  color: #FFFFFF;
+}
+
+.step-dot--waiting {
+  background: #E5E7EB;
+  color: #9CA3AF;
+}
+
+.step-line {
+  width: 60px;
+  height: 4px;
+  margin: 0 8px;
+  border-radius: 2px;
+}
+
+.step-line--active {
+  background: #F97316;
+}
+
+.step-line--completed {
+  background: #34D399;
+}
+
+.step-line--waiting {
+  background: #E5E7EB;
+}

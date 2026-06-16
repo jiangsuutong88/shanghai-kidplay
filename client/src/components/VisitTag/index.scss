@@ -1,0 +1,71 @@
+.visit-tag {
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+
+  &__title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #1F2937;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  &__count {
+    font-size: 24px;
+    color: #9CA3AF;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #ECFDF5;
+    border: 2px solid #6EE7B7;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  &__content {
+    padding: 10px 8px 10px 20px;
+    display: flex;
+    align-items: center;
+
+    &:active {
+      opacity: 0.7;
+    }
+  }
+
+  &__name {
+    font-size: 26px;
+    color: #065F46;
+    font-weight: 500;
+  }
+
+  &__remove {
+    padding: 10px 16px 10px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:active {
+      opacity: 0.6;
+    }
+  }
+
+  &__remove-text {
+    font-size: 22px;
+    color: #9CA3AF;
+    font-weight: 600;
+  }
+}

@@ -1,0 +1,150 @@
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #FFF7ED 0%, #F9FAFB 30%);
+
+  &__header {
+    padding: 48px 32px 24px;
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #C2410C;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  &__subtitle {
+    font-size: 28px;
+    color: #9CA3AF;
+    display: block;
+  }
+
+  &__month-banner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 0 32px 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    border-radius: 20px;
+    border: 2px solid #F59E0B;
+  }
+
+  &__month-emoji {
+    font-size: 56px;
+  }
+
+  &__month-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__month-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #92400E;
+    margin-bottom: 4px;
+  }
+
+  &__month-subtitle {
+    font-size: 24px;
+    color: #B45309;
+  }
+
+  &__visits {
+    margin: 0 32px;
+  }
+
+  &__steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 32px 32px;
+    gap: 0;
+  }
+
+  &__content {
+    flex: 1;
+    padding: 0 32px;
+  }
+
+  &__step {
+    animation: fadeIn 0.3s ease;
+  }
+
+  &__loading {
+    padding: 60px 0;
+    text-align: center;
+
+    &-text {
+      font-size: 28px;
+      color: #9CA3AF;
+    }
+  }
+
+  &__weather-hint {
+    background: #EFF6FF;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-top: 16px;
+
+    &-text {
+      font-size: 28px;
+      color: #2563EB;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    gap: 16px;
+    padding: 24px 32px;
+    background: #FFFFFF;
+    border-top: 1px solid #F3F4F6;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+
+  &__btn-back {
+    flex: 0 0 200px;
+
+    &-text {
+      font-size: 30px;
+      color: #6B7280;
+      font-weight: 500;
+    }
+  }
+
+  &__btn-next {
+    flex: 1;
+
+    &-text {
+      font-size: 30px;
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+  }
+
+  &__btn-submit {
+    flex: 1;
+
+    &-text {
+      font-size: 30px;
+      font-weight: 600;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
